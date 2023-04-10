@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 import { validationResult } from 'express-validator';
+import bcrypt from 'bcryptjs';
+import { generateAccessToken } from './utils.js';
 
 const authController = {
     register: (req: Request, res: Response) => {
@@ -9,9 +11,9 @@ const authController = {
                 return res.status(400).json({ message: 'Registration error', errors });
             console.log('Handling registration: ', JSON.stringify(req.body));
 
-            const queryResult = await dbController.dbClient.query(
-                `select * from public.user where email='${req.body.email}'`
-            );
+            // const queryResult = await dbController.dbClient.query(
+            //     `select * from public.user where email='${req.body.email}'`
+            // );
             console.log('Query result:', queryResult.rows);
 
             if (queryResult.rows.length == 0) {
@@ -34,7 +36,25 @@ const authController = {
             res.status(400).json({ message: 'Registration error' });
         }
     },
-    login: (req: Request, res: Response) => {},
+    login: (req: Request, res: Response) => {
+        try {
+            const { email, password } = req.body;
+            // return res.status(400).json({ message: `Пользователь ${email} не найден` });
+            // const validPassword = bcrypt.compareSync(password, user.password);
+            // if (!validPassword) {
+            // return res.status(400).json({ message: `Введен неверный пароль` });
+            // }
+
+            const token = generateAccessToken(user._id, user.roles);
+            req.headers.authorization = `Bearer ${token}`;
+            return res.json({
+                loginResult: 'success',
+            });
+        } catch (e) {
+            console.log(e);
+            res.status(400).json({ message: 'Login error' });
+        }
+    },
 };
 
 export default authController;
