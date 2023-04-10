@@ -1,7 +1,14 @@
 import { useState } from 'react';
+import GlobalNav from './views/components/GlobalNav/globalNav';
+import AppRouter from './AppRouter';
 
 function App() {
-    return <div>Online store test</div>;
+    return (
+        <>
+            <GlobalNav />
+            <AppRouter />
+        </>
+    );
 }
 
 export default App;
