@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { validationResult } from 'express-validator';
 import bcrypt from 'bcryptjs';
-import { generateAccessToken } from './utils.js';
+import { generateAccessToken } from './utils';
 
 const authController = {
     register: (req: Request, res: Response) => {
@@ -45,7 +45,9 @@ const authController = {
             // return res.status(400).json({ message: `Введен неверный пароль` });
             // }
 
-            const token = generateAccessToken(user._id, user.roles);
+            // const token = generateAccessToken({
+            //     user_id: user.id
+            // })
             req.headers.authorization = `Bearer ${token}`;
             return res.json({
                 loginResult: 'success',
