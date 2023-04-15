@@ -27,6 +27,7 @@
         "mysql2": "^3.2.0"
     },
     "devDependencies": {
+        "@types/mysql2": "github:types/mysql2",
         "typescript": "^5.0.4"
     }
 }

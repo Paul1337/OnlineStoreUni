@@ -1,10 +1,7 @@
 import jwt from 'jsonwebtoken';
 import fs from 'fs';
 import path from 'path';
-
-interface IJWTPayload {
-    user_id: number;
-}
+import { IJWTPayload } from '../../models/auth/auth.module';
 
 export function getSecretKey() {
     const configPath = path.join(__dirname, '../..', 'config.json');

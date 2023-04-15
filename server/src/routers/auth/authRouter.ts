@@ -4,10 +4,12 @@ import { check } from 'express-validator';
 
 const authRouter = express();
 
+const emailMiddleware = check('email', 'Email should be a valid email )').isEmail();
+
 authRouter.get(
     '/register',
     [
-        check('email', 'Email should be a valid email )').isEmail(),
+        emailMiddleware,
         check('password', 'Password should be between 6 and 10 symbols length').isLength({
             min: 6,
             max: 20,
@@ -15,6 +17,6 @@ authRouter.get(
     ],
     authController.register
 );
-authRouter.get('/login', authController.login);
+authRouter.get('/login', [emailMiddleware], authController.login);
 
 export default authRouter;

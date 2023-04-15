@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
-import { getSecretKey } from '../auth/utils';
+import { getSecretKey } from '../utils';
+import { IJWTPayload } from '../../../models/auth/auth.module';
 
 export default function (req: Request, res: Response, next: NextFunction) {
     if (req.method == 'OPTIONS') {
@@ -15,7 +16,9 @@ export default function (req: Request, res: Response, next: NextFunction) {
         }
         const decodedData = jwt.verify(token, getSecretKey());
         console.log('Decoded data:', decodedData);
-        req.tokenPayload = decodedData;
+        if (typeof decodedData == 'object') {
+            req.tokenPayload = decodedData;
+        }
         next();
     } catch (err) {
         console.log(err);
