@@ -1,16 +1,13 @@
 import * as mysql from 'mysql2/promise';
+import fs from 'fs';
+import path from 'path';
 
 class DBController {
     private options: mysql.ConnectionOptions;
     public connection?: mysql.Connection;
 
     constructor() {
-        this.options = {
-            host: 'm130.ru',
-            user: 'admin',
-            password: 'moK1859*Xn$lk.',
-            database: 'OnlineStoreUni',
-        };
+        this.options = JSON.parse(fs.readFileSync(path.join(__dirname, '../config.json'), 'utf-8'));
     }
 
     async connect() {

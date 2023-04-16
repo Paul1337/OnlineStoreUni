@@ -31,30 +31,30 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const mysql = __importStar(require("mysql2/promise"));
+const fs_1 = __importDefault(require("fs"));
+const path_1 = __importDefault(require("path"));
 class DBController {
     constructor() {
-        this.options = {
-            host: 'm130.ru',
-            user: 'admin',
-            password: 'moK1859*Xn$lk.',
-            database: 'OnlineStoreUni',
-        };
+        this.options = JSON.parse(fs_1.default.readFileSync(path_1.default.join(__dirname, '../config.json'), 'utf-8'));
     }
     connect() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 console.log('connecting..');
                 this.connection = yield mysql.createConnection(this.options);
-                this.connection
-                    .query('insert into User (name, role) values ("test", "user")')
-                    .then((res) => {
-                    console.log(res);
-                })
-                    .catch((err) => {
-                    console.log('Err', err);
-                });
+                // this.connection
+                //     .query('insert into User (name, role) values ("test", "user")')
+                //     .then((res) => {
+                //         console.log(res);
+                //     })
+                //     .catch((err) => {
+                //         console.log('Err', err);
+                //     });
                 // await this.connection.connect();
             }
             catch (err) {
