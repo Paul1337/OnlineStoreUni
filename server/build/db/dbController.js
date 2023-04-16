@@ -37,17 +37,25 @@ class DBController {
     constructor() {
         this.options = {
             host: 'm130.ru',
-            user: 'root',
-            password: `b2144_1372asdfGWn`,
+            user: 'admin',
+            password: 'moK1859*Xn$lk.',
             database: 'OnlineStoreUni',
-            // port: 3306,
         };
     }
     connect() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+                console.log('connecting..');
                 this.connection = yield mysql.createConnection(this.options);
-                yield this.connection.connect();
+                this.connection
+                    .query('insert into User (name, role) values ("test", "user")')
+                    .then((res) => {
+                    console.log(res);
+                })
+                    .catch((err) => {
+                    console.log('Err', err);
+                });
+                // await this.connection.connect();
             }
             catch (err) {
                 console.error('Connection error:', err);
