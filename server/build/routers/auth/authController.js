@@ -31,13 +31,14 @@ const authController = {
             // );
             console.log('Query result:', queryResult);
             const rows = queryResult[0];
+            console.log(rows);
             // if (rows.length == 0) {
-            //     const passwordHash = bcrypt.hashSync(req.body.password, 7);
-            //     const insertRes = await dbController.dbClient.query(
-            //         `insert into public.user (email, first_name, last_name, phone_number, password, role) values ('${req.body.email}', '${req.body.first_name}', '${req.body.last_name}', '${req.body.phone_number}', '${passwordHash}', 'user')`
-            //     );
-            //     console.log('Insert res:', insertRes);
-            //     res.status(200).json({ message: 'ok' });
+            // //     const passwordHash = bcrypt.hashSync(req.body.password, 7);
+            // //     const insertRes = await dbController.dbClient.query(
+            // //         `insert into public.user (email, first_name, last_name, phone_number, password, role) values ('${req.body.email}', '${req.body.first_name}', '${req.body.last_name}', '${req.body.phone_number}', '${passwordHash}', 'user')`
+            // //     );
+            // //     console.log('Insert res:', insertRes);
+            // //     res.status(200).json({ message: 'ok' });
             // } else if (rows.length == 1) {
             //     res.status(403).json({ message: 'User already exists' });
             // } else {

@@ -8,6 +8,8 @@ export function getSecretKey() {
 }
 
 export function generateAccessToken(payload: IJWTPayload) {
-    const token = jwt.sign(payload, getSecretKey());
+    const token = jwt.sign(payload, getSecretKey(), {
+        expiresIn: '2 days',
+    });
     return token;
 }

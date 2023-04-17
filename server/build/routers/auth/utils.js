@@ -12,7 +12,9 @@ function getSecretKey() {
 }
 exports.getSecretKey = getSecretKey;
 function generateAccessToken(payload) {
-    const token = jsonwebtoken_1.default.sign(payload, getSecretKey());
+    const token = jsonwebtoken_1.default.sign(payload, getSecretKey(), {
+        expiresIn: '2 days',
+    });
     return token;
 }
 exports.generateAccessToken = generateAccessToken;
