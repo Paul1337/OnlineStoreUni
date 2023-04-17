@@ -1,6 +1,4 @@
 import jwt from 'jsonwebtoken';
-import fs from 'fs';
-import path from 'path';
 import { IJWTPayload } from './auth.model';
 import configController from '../../config/configController';
 
