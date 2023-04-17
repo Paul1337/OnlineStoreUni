@@ -36,11 +36,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mysql = __importStar(require("mysql2/promise"));
-const fs_1 = __importDefault(require("fs"));
-const path_1 = __importDefault(require("path"));
+const configController_1 = __importDefault(require("../config/configController"));
 class DBController {
     constructor() {
-        this.options = JSON.parse(fs_1.default.readFileSync(path_1.default.join(__dirname, '../config.json'), 'utf-8'));
+        this.options = configController_1.default.config.databaseConnection;
     }
     connect() {
         return __awaiter(this, void 0, void 0, function* () {

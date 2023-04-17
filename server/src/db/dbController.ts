@@ -1,13 +1,14 @@
 import * as mysql from 'mysql2/promise';
 import fs from 'fs';
 import path from 'path';
+import configController from '../config/configController';
 
 class DBController {
     private options: mysql.ConnectionOptions;
     public connection?: mysql.Connection;
 
     constructor() {
-        this.options = JSON.parse(fs.readFileSync(path.join(__dirname, '../config.json'), 'utf-8'));
+        this.options = configController.config.databaseConnection;
     }
 
     async connect() {

@@ -5,12 +5,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateAccessToken = exports.getSecretKey = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const fs_1 = __importDefault(require("fs"));
-const path_1 = __importDefault(require("path"));
+const configController_1 = __importDefault(require("../../config/configController"));
 function getSecretKey() {
-    const configPath = path_1.default.join(__dirname, '../../', 'config.json');
-    console.log('config-path:', configPath);
-    const config = JSON.parse(fs_1.default.readFileSync(configPath, 'utf-8'));
+    const config = configController_1.default.config;
     return config.secretKey;
 }
 exports.getSecretKey = getSecretKey;

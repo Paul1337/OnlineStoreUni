@@ -1,12 +1,11 @@
 import jwt from 'jsonwebtoken';
 import fs from 'fs';
 import path from 'path';
-import { IJWTPayload } from '../../models/auth/auth.module';
+import { IJWTPayload } from './auth.model';
+import configController from '../../config/configController';
 
 export function getSecretKey() {
-    const configPath = path.join(__dirname, '../../', 'config.json');
-    console.log('config-path:', configPath);
-    const config = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
+    const config = configController.config;
     return config.secretKey;
 }
 

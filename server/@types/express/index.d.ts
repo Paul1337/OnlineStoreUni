@@ -1,4 +1,4 @@
-import { IJWTPayload } from '../../src/models/auth/auth.module';
+import { IJWTPayload } from '../../src/routers/auth/auth.model';
 
 declare global {
     namespace Express {

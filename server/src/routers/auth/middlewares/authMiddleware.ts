@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import { getSecretKey } from '../utils';
-import { IJWTPayload } from '../../../models/auth/auth.module';
+import { IJWTPayload } from '../auth.model';
 
 export default function (req: Request, res: Response, next: NextFunction) {
     if (req.method == 'OPTIONS') {

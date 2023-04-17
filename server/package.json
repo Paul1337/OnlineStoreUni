@@ -8,7 +8,7 @@
         "build-start": "npm run build && npm start",
         "build": "npx tsc",
         "watch": "npx tsc --watch && nodemon ./build/index.js",
-        "copy-files": "cp "
+        "copy-files": "cp -r ./src/data ./build"
     },
     "keywords": [],
     "author": "",
