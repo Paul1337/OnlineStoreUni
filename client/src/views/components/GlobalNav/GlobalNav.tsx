@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from 'react';
-import logo from '../../../assets/logo.png';
+import logo from '../../../assets/logo/logo.png';
 
 import { Disclosure } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
@@ -9,10 +9,16 @@ const classNames = (...classes: string[]): string => {
     return classes.filter(Boolean).join(' ');
 };
 
+const authedNavigation = [
+    { name: 'Profile', href: '/' },
+    { name: 'Shop', href: '/shop' },
+    { name: 'Log out', href: '/entry' },
+];
+
 const navigation = [
-    { name: 'Profile', href: '/', current: true },
-    { name: 'Shop', href: '/shop', current: false },
-    { name: 'Entry', href: '/entry', current: false },
+    { name: 'Profile', href: '/' },
+    { name: 'Shop', href: '/shop' },
+    { name: 'Log in / auth', href: '/entry' },
 ];
 
 const GlobalNav = () => {

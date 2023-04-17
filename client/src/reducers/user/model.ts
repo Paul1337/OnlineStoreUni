@@ -7,4 +7,5 @@ interface User {
     name: string;
     role: UserRole;
     profileImg: string;
+    isAuthed: boolean;
 }
