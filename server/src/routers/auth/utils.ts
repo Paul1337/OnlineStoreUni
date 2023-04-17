@@ -4,7 +4,7 @@ import path from 'path';
 import { IJWTPayload } from '../../models/auth/auth.module';
 
 export function getSecretKey() {
-    const configPath = path.join(__dirname, '../..', 'config.json');
+    const configPath = path.join(__dirname, '../../', 'config.json');
     console.log('config-path:', configPath);
     const config = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
     return config.secretKey;

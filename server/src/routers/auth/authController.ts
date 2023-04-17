@@ -8,6 +8,7 @@ const authController = {
     register: async (req: Request, res: Response) => {
         try {
             const errors = validationResult(req);
+
             if (!errors.isEmpty())
                 return res.status(400).json({ message: 'Registration error', errors });
             console.log('Handling registration: ', JSON.stringify(req.body));
@@ -15,15 +16,14 @@ const authController = {
             const queryResult = await dbController.connection?.query(
                 `select * from User where email=${req.body.email}`
             );
+            console.log('query-result', queryResult);
             if (!queryResult) throw new Error('Query result undefined');
 
             // const queryResult = await dbController.dbClient.query(
             //     `select * from public.user where email='${req.body.email}'`
             // );
             console.log('Query result:', queryResult);
-
             const rows = queryResult[0];
-
             // if (rows.length == 0) {
             //     const passwordHash = bcrypt.hashSync(req.body.password, 7);
             //     const insertRes = await dbController.dbClient.query(
@@ -54,8 +54,8 @@ const authController = {
             // }
 
             // const token = generateAccessToken({
-            //     user_id: user.id
-            // })
+            //     user_id: user.id,
+            // });
             // req.headers.authorization = `Bearer ${token}`;
             return res.json({
                 loginResult: 'success',

@@ -23,6 +23,7 @@ const authController = {
                 return res.status(400).json({ message: 'Registration error', errors });
             console.log('Handling registration: ', JSON.stringify(req.body));
             const queryResult = yield ((_a = dbController_1.default.connection) === null || _a === void 0 ? void 0 : _a.query(`select * from User where email=${req.body.email}`));
+            console.log('query-result', queryResult);
             if (!queryResult)
                 throw new Error('Query result undefined');
             // const queryResult = await dbController.dbClient.query(
@@ -59,8 +60,8 @@ const authController = {
             // return res.status(400).json({ message: `Введен неверный пароль` });
             // }
             // const token = generateAccessToken({
-            //     user_id: user.id
-            // })
+            //     user_id: user.id,
+            // });
             // req.headers.authorization = `Bearer ${token}`;
             return res.json({
                 loginResult: 'success',

@@ -7,7 +7,8 @@
         "start": "node ./build/index",
         "build-start": "npm run build && npm start",
         "build": "npx tsc",
-        "watch": "npx tsc --watch"
+        "watch": "npx tsc --watch && nodemon ./build/index.js",
+        "copy-files": "cp "
     },
     "keywords": [],
     "author": "",
@@ -28,6 +29,8 @@
     },
     "devDependencies": {
         "@types/mysql2": "github:types/mysql2",
+        "concurrently": "^8.0.1",
+        "nodemon": "^2.0.22",
         "typescript": "^5.0.4"
     }
 }

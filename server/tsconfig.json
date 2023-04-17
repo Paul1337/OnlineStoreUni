@@ -122,4 +122,5 @@
         "excludeDirectories": ["**/node_modules", "build"],
         "excludeFiles": []
     }
+    // "include": ["./src/**/*"]
 }

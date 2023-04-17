@@ -8,7 +8,7 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 function getSecretKey() {
-    const configPath = path_1.default.join(__dirname, '../..', 'config.json');
+    const configPath = path_1.default.join(__dirname, '../../', 'config.json');
     console.log('config-path:', configPath);
     const config = JSON.parse(fs_1.default.readFileSync(configPath, 'utf-8'));
     return config.secretKey;
