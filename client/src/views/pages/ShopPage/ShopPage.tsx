@@ -39,7 +39,7 @@ const ShopPage = () => {
                 <div className={styles.product + ' bg-gray-200'} key={product.id}>
                     <div className={styles.product__title}>{product.title}</div>
                     <img src={product.img} alt='image not found' className={styles.product__img} />
-                    <div className={styles.product__descr}>{product.description}</div>
+                    {/* <div className={styles.product__descr}>{product.description}</div> */}
                     <div className={styles.product__price}>{product.price} р.</div>
                 </div>
             ))}
