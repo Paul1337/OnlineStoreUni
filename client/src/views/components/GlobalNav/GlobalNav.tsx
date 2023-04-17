@@ -5,23 +5,17 @@ import { Disclosure } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { NavLink, useLocation } from 'react-router-dom';
 
-function classNames(...classes: string[]): string {
+const classNames = (...classes: string[]): string => {
     return classes.filter(Boolean).join(' ');
-}
+};
 
-const defaultNavState = [
+const navigation = [
     { name: 'Profile', href: '/', current: true },
     { name: 'Shop', href: '/shop', current: false },
     { name: 'Entry', href: '/entry', current: false },
 ];
 
-function GlobalNav() {
-    const location = useLocation();
-    const navigation = [...defaultNavState];
-    for (let nav of navigation) {
-        nav.current = nav.href === location.pathname;
-    }
-
+const GlobalNav = () => {
     return (
         <Disclosure as='nav' className='bg-gray-800'>
             {({ open }) => (
@@ -52,13 +46,14 @@ function GlobalNav() {
                                             <NavLink
                                                 key={item.name}
                                                 to={item.href}
-                                                className={classNames(
-                                                    item.current
-                                                        ? 'bg-gray-900 text-white'
-                                                        : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                                                    'rounded-md px-3 py-2 text-sm font-medium'
-                                                )}
-                                                aria-current={item.current ? 'page' : undefined}
+                                                className={({ isActive }) =>
+                                                    classNames(
+                                                        isActive
+                                                            ? 'bg-gray-900 text-white'
+                                                            : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                                                        'rounded-md px-3 py-2 text-sm font-medium'
+                                                    )
+                                                }
                                             >
                                                 {item.name}
                                             </NavLink>
@@ -72,6 +67,6 @@ function GlobalNav() {
             )}
         </Disclosure>
     );
-}
+};
 
 export default GlobalNav;
