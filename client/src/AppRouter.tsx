@@ -4,6 +4,7 @@ import ProfilePage from './views/pages/ProfilePage/ProfilePage';
 import ShopPage from './views/pages/ShopPage/ShopPage';
 import ProductPage from './views/pages/ProductPage/ProductPage';
 import EntryPage from './views/pages/EntryPage/EntryPage';
+import ErrorPage from './views/pages/ErrorPage/ErrorPage';
 
 function AppRouter() {
     return (
@@ -12,6 +13,7 @@ function AppRouter() {
             <Route path='/shop' element={<ShopPage />} />
             <Route path='/entry' element={<EntryPage />} />
             <Route path='products/:id' element={<ProductPage />} />
+            <Route path='*' element={<ErrorPage />} />
         </Routes>
     );
 }
