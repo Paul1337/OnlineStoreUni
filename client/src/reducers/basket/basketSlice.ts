@@ -1,6 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { IBasketState } from '../../models/basket/basket';
 
-const initialState = {};
+const initialState: IBasketState = {
+    products: [],
+};
 
 const basketSlice = createSlice({
     name: 'basket',

@@ -1,7 +1,8 @@
 import React from 'react';
 import styles from './ShopPage.module.css';
+import { ProductList } from '../../../models/product/product';
 
-const products: IStoreItem[] = [
+const products: ProductList = [
     {
         id: 0,
         title: 'product-test',

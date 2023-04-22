@@ -1,6 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { IUserState } from '../../models/user/user';
 
-const initialState = {};
+const initialState: IUserState = {
+    isAuthed: false,
+};
 
 const userSlice = createSlice({
     name: 'user',
