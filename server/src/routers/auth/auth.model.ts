@@ -7,5 +7,5 @@ export interface IJWTPayload {
     id: number;
     name: string;
     role: UserRole;
-    profileImg: string;
+    profileImg?: string;
 }

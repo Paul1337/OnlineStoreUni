@@ -13,41 +13,39 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_validator_1 = require("express-validator");
-const dbController_1 = __importDefault(require("../../db/dbController"));
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const utils_1 = require("./utils");
+const dbController_1 = __importDefault(require("../../db/dbController"));
+const utils_2 = require("./utils");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const authController = {
     register: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        var _a;
+        var _a, _b;
         try {
             const errors = (0, express_validator_1.validationResult)(req);
-            if (!errors.isEmpty())
-                return res.status(400).json({ message: 'Registration error', errors });
+            // if (!errors.isEmpty())
+            // return res.status(400).json({ message: 'Registration error', errors });
             console.log('Handling registration: ', JSON.stringify(req.body));
             const queryResult = yield ((_a = dbController_1.default.connection) === null || _a === void 0 ? void 0 : _a.query(`select * from User where email=${req.body.email}`));
             console.log('query-result', queryResult);
             if (!queryResult)
                 throw new Error('Query result undefined');
-            // const queryResult = await dbController.dbClient.query(
-            //     `select * from public.user where email='${req.body.email}'`
-            // );
-            console.log('Query result:', queryResult);
+            console.log('Query result:', queryResult[0]);
             const rows = queryResult[0];
-            console.log(rows);
-            // if (rows.length == 0) {
-            // //     const passwordHash = bcrypt.hashSync(req.body.password, 7);
-            // //     const insertRes = await dbController.dbClient.query(
-            // //         `insert into public.user (email, first_name, last_name, phone_number, password, role) values ('${req.body.email}', '${req.body.first_name}', '${req.body.last_name}', '${req.body.phone_number}', '${passwordHash}', 'user')`
-            // //     );
-            // //     console.log('Insert res:', insertRes);
-            // //     res.status(200).json({ message: 'ok' });
-            // } else if (rows.length == 1) {
-            //     res.status(403).json({ message: 'User already exists' });
-            // } else {
-            //     throw new Error('More than one row with that email!');
-            // }
-            // if no -> registrate user
-            // is has some -> error
+            if (!Array.isArray(rows))
+                return res.status(508).json({ message: 'Some server error, have no idea..' });
+            if (rows.length == 0) {
+                const passwordHash = bcryptjs_1.default.hashSync(req.body.password, 7);
+                const insertRes = yield ((_b = dbController_1.default.connection) === null || _b === void 0 ? void 0 : _b.query(`insert into User (email, name, password, role) values ('${req.body.email}', '${req.body.username}', '${passwordHash}', 'User')`));
+                console.log('Insert res:', insertRes);
+                res.status(200).json({ message: 'ok' });
+            }
+            else if (rows.length == 1) {
+                res.status(403).json({ message: 'User already exists' });
+            }
+            else {
+                throw new Error('More than one row with that email!');
+            }
         }
         catch (err) {
             console.error(err);
@@ -55,23 +53,30 @@ const authController = {
         }
     }),
     login: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        var _c;
         try {
             const { email, password } = req.body;
-            // return res.status(400).json({ message: `Пользователь ${email} не найден` });
-            // const validPassword = bcrypt.compareSync(password, user.password);
-            // if (!validPassword) {
-            // return res.status(400).json({ message: `Введен неверный пароль` });
-            // }
-            // const token = generateAccessToken({
-            //     user_id: user.id,
-            // });
-            const token = 'test-token';
+            const queryResult = yield ((_c = dbController_1.default.connection) === null || _c === void 0 ? void 0 : _c.query(`select * from User where email=${req.body.email}`));
+            const rows = queryResult === null || queryResult === void 0 ? void 0 : queryResult[0];
+            if (!Array.isArray(rows))
+                return res.status(508).json({ message: 'Some server error, have no idea..' });
+            const user = rows[0];
+            if (!user)
+                return res.status(400).json({ message: `User ${email} not found` });
+            console.log('user ', user);
+            const validPassword = bcryptjs_1.default.compareSync(password, user.password);
+            if (!validPassword) {
+                return res.status(400).json({ message: `Password is incorrect` });
+            }
+            const token = (0, utils_1.generateAccessToken)({
+                id: user.id,
+                name: user.name,
+                role: user.role,
+            });
             res.cookie('authToken', token, {
                 httpOnly: true,
-                // maxAge: 1000 * 60 * 60 * 48,
+                maxAge: 1000 * 60 * 60 * 48,
             });
-            // req.headers.authorization = `Bearer ${token}`;
-            // req.headers.expires = '2 days';
             return res.json({
                 loginResult: 'success',
             });
@@ -85,9 +90,9 @@ const authController = {
         try {
             const token = req.cookies.authToken;
             if (!token) {
-                return res.status(403).json({ message: 'Пользователь не авторизован' });
+                return res.status(403).json({ message: 'User is not authed' });
             }
-            const decodedData = jsonwebtoken_1.default.verify(token, (0, utils_1.getSecretKey)());
+            const decodedData = jsonwebtoken_1.default.verify(token, (0, utils_2.getSecretKey)());
             console.log('Decoded data:', decodedData);
             return res.json(decodedData);
         }

@@ -5,8 +5,23 @@ export interface IAuthResponse {
     data: IUserData;
 }
 
-export interface IAuthResponse {}
+export interface ILoginRequest {
+    email: string;
+    password: string;
+}
 
-export interface ILogin {}
+export interface ILoginResponse {
+    message?: string;
+    data: IUserData;
+}
 
-export interface IRegister {}
+export interface IRegisterRequest {
+    username: string;
+    email: string;
+    password: string;
+}
+
+export interface IRegisterResponse {
+    message?: string;
+    data: IUserData;
+}

@@ -1,11 +1,21 @@
 import axios from 'axios';
 import config from './config';
-import { IAuthResponse } from '../models/api/auth';
+import {
+    IAuthResponse,
+    ILoginRequest,
+    ILoginResponse,
+    IRegisterRequest,
+    IRegisterResponse,
+} from '../models/api/auth';
 
 export const authUser = async (): Promise<IAuthResponse> => {
-    return axios.get(`${config.host}/auth`, {
-        // headers: {
-        //     Authorization: `Bearer `
-        // }
-    });
+    return (await axios.get(`${config.host}/auth`)).data;
+};
+
+export const loginUser = async (data: ILoginRequest): Promise<ILoginResponse> => {
+    return (await axios.post(`${config.host}/auth/login`, data)).data;
+};
+
+export const registerUser = async (data: IRegisterRequest): Promise<IRegisterResponse> => {
+    return (await axios.post(`${config.host}/auth/register`, data)).data;
 };
