@@ -8,7 +8,11 @@ const initialState: IUserState = {
 const userSlice = createSlice({
     name: 'user',
     initialState,
-    reducers: {},
+    reducers: {
+        getUserData: (state, action) => {},
+        login: (state, action) => {},
+        register: (state, action) => {},
+    },
 });
 
 export default userSlice;

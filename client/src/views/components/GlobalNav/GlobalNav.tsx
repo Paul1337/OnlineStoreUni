@@ -12,12 +12,13 @@ const classNames = (...classes: string[]) => classes.filter(Boolean).join(' ');
 const authedNavigation = [
     { name: 'Profile', href: '/' },
     { name: 'Shop', href: '/shop' },
+    { name: 'About', href: '/about' },
     { name: 'Log out', href: '/entry' },
 ];
 
 const defaultNavigation = [
-    { name: 'Profile', href: '/' },
     { name: 'Shop', href: '/shop' },
+    { name: 'About', href: '/about' },
     { name: 'Log in', href: '/entry' },
 ];
 
