@@ -1,18 +1,27 @@
 export enum UserRole {
-    User,
-    Admin,
+    User = 'User',
+    Admin = 'Admin',
 }
 
-interface IAuthedUser {
-    isAuthed: true;
+export interface IUserData {
     id: number;
     name: string;
     role: UserRole;
     profileImg: string;
 }
 
-interface IUnauthedUser {
-    isAuthed: false;
+export interface IUserState {
+    isAuthed: boolean;
+    data?: IUserData;
 }
 
-export type IUserState = IAuthedUser | IUnauthedUser;
+// interface IAuthedUser {
+//     isAuthed: true;
+//     data: IUserData;
+// }
+
+// interface IUnauthedUser {
+//     isAuthed: false;
+// }
+
+// export type IUserState = IAuthedUser | IUnauthedUser;

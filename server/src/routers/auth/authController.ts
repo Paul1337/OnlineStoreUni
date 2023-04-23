@@ -3,6 +3,8 @@ import { validationResult } from 'express-validator';
 import bcrypt from 'bcryptjs';
 import { generateAccessToken } from './utils';
 import dbController from '../../db/dbController';
+import { getSecretKey } from './utils';
+import jwt from 'jsonwebtoken';
 
 const authController = {
     register: async (req: Request, res: Response) => {
@@ -64,6 +66,21 @@ const authController = {
         } catch (e) {
             console.log(e);
             res.status(400).json({ message: 'Login error' });
+        }
+    },
+    auth: async (req: Request, res: Response) => {
+        try {
+            if (!req.headers.authorization) throw 'no auth header';
+            const token = req.headers.authorization.split(' ')[1];
+            if (!token) {
+                return res.status(403).json({ message: 'Пользователь не авторизован' });
+            }
+            const decodedData = jwt.verify(token, getSecretKey());
+            console.log('Decoded data:', decodedData);
+            return res.json(decodedData);
+        } catch (e) {
+            console.log(e);
+            res.status(400).json({ message: 'Auth error' });
         }
     },
 };

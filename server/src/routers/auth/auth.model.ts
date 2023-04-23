@@ -1,3 +1,11 @@
+export enum UserRole {
+    User = 'User',
+    Admin = 'Admin',
+}
+
 export interface IJWTPayload {
-    user_id: number;
+    id: number;
+    name: string;
+    role: UserRole;
+    profileImg: string;
 }

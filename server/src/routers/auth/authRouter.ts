@@ -18,5 +18,6 @@ authRouter.get(
     authController.register
 );
 authRouter.get('/login', [emailMiddleware], authController.login);
+authRouter.get('/', authController.auth);
 
 export default authRouter;
