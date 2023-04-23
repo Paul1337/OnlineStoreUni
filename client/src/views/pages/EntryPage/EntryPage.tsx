@@ -11,12 +11,23 @@ const formContainerStyles: CSSProperties = {
 const EntryPage = () => {
     const [entryType, setEntryType] = useState(EntryType.Login);
 
+    const handleLogin = (data: object) => {
+        console.log('Login with data', data);
+    };
+
+    const handleRegister = (data: object) => {
+        console.log('Register with data', data);
+    };
+
     return (
         <div style={formContainerStyles}>
             {entryType == EntryType.Login ? (
-                <LoginForm onUnregisteredClick={() => setEntryType(EntryType.Register)} />
+                <LoginForm
+                    onSubmit={handleLogin}
+                    onUnregisteredClick={() => setEntryType(EntryType.Register)}
+                />
             ) : (
-                <RegForm />
+                <RegForm onSubmit={handleRegister} />
             )}
         </div>
     );
