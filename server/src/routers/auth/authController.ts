@@ -59,7 +59,13 @@ const authController = {
             // const token = generateAccessToken({
             //     user_id: user.id,
             // });
+            const token = 'test-token';
+            res.cookie('authToken', token, {
+                httpOnly: true,
+                // maxAge: 1000 * 60 * 60 * 48,
+            });
             // req.headers.authorization = `Bearer ${token}`;
+            // req.headers.expires = '2 days';
             return res.json({
                 loginResult: 'success',
             });
@@ -70,8 +76,7 @@ const authController = {
     },
     auth: async (req: Request, res: Response) => {
         try {
-            if (!req.headers.authorization) throw 'no auth header';
-            const token = req.headers.authorization.split(' ')[1];
+            const token = req.cookies.authToken;
             if (!token) {
                 return res.status(403).json({ message: 'Пользователь не авторизован' });
             }

@@ -9,8 +9,7 @@ export default function (req: Request, res: Response, next: NextFunction) {
     }
 
     try {
-        if (!req.headers.authorization) throw 'no auth header';
-        const token = req.headers.authorization.split(' ')[1];
+        const token = req.cookies.authToken;
         if (!token) {
             return res.status(403).json({ message: 'Пользователь не авторизован' });
         }

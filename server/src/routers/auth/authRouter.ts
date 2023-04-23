@@ -6,7 +6,7 @@ const authRouter = express();
 
 const emailMiddleware = check('email', 'Email should be a valid email )').isEmail();
 
-authRouter.get(
+authRouter.post(
     '/register',
     [
         emailMiddleware,
@@ -17,7 +17,7 @@ authRouter.get(
     ],
     authController.register
 );
-authRouter.get('/login', [emailMiddleware], authController.login);
+authRouter.post('/login', [emailMiddleware], authController.login);
 authRouter.get('/', authController.auth);
 
 export default authRouter;

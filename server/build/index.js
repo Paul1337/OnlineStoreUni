@@ -15,16 +15,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const dotenv_1 = __importDefault(require("dotenv"));
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
+const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const authRouter_1 = __importDefault(require("./routers/auth/authRouter"));
 const dbController_1 = __importDefault(require("./db/dbController"));
 const DEFAULT_PORT = 8010;
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
+app.use((0, cookie_parser_1.default)());
 app.use(express_1.default.json());
 app.use('/auth', authRouter_1.default);
 dotenv_1.default.config();
 const PORT = process.env.PORT || DEFAULT_PORT;
-app.get('/', (req, res) => res.status(200).send('ok'));
+app.get('/', (req, res) => res.status(200).send(`ok ${Date.now()}`));
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         try {

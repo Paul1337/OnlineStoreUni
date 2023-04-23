@@ -8,7 +8,7 @@ const initialState: IUserState = {
     isAuthed: false,
 };
 
-const getUserData = createAsyncThunk('user/getData', async (): Promise<IAuthResponse> => {
+export const getUserData = createAsyncThunk('user/getData', async (): Promise<IAuthResponse> => {
     const user = await authUser();
     return user;
 });

@@ -14,6 +14,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_validator_1 = require("express-validator");
 const dbController_1 = __importDefault(require("../../db/dbController"));
+const utils_1 = require("./utils");
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const authController = {
     register: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         var _a;
@@ -63,7 +65,13 @@ const authController = {
             // const token = generateAccessToken({
             //     user_id: user.id,
             // });
+            const token = 'test-token';
+            res.cookie('authToken', token, {
+                httpOnly: true,
+                // maxAge: 1000 * 60 * 60 * 48,
+            });
             // req.headers.authorization = `Bearer ${token}`;
+            // req.headers.expires = '2 days';
             return res.json({
                 loginResult: 'success',
             });
@@ -71,6 +79,21 @@ const authController = {
         catch (e) {
             console.log(e);
             res.status(400).json({ message: 'Login error' });
+        }
+    }),
+    auth: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const token = req.cookies.authToken;
+            if (!token) {
+                return res.status(403).json({ message: 'Пользователь не авторизован' });
+            }
+            const decodedData = jsonwebtoken_1.default.verify(token, (0, utils_1.getSecretKey)());
+            console.log('Decoded data:', decodedData);
+            return res.json(decodedData);
+        }
+        catch (e) {
+            console.log(e);
+            res.status(400).json({ message: 'Auth error' });
         }
     }),
 };

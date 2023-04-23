@@ -1,5 +1,5 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import userSlice from '../reducers/user/userSlice';
+import userSlice, { getUserData } from '../reducers/user/userSlice';
 import basketSlice from '../reducers/basket/basketSlice';
 import storeSlice from '../reducers/store/storeSlice';
 import { useDispatch } from 'react-redux';
@@ -19,3 +19,5 @@ export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 // ??
 export const useAppDispatch: () => AppDispatch = useDispatch;
+
+store.dispatch(getUserData());
