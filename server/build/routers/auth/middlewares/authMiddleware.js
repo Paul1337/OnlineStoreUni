@@ -12,7 +12,7 @@ function default_1(req, res, next) {
     try {
         const token = req.cookies.authToken;
         if (!token) {
-            return res.status(403).json({ message: 'Пользователь не авторизован' });
+            return res.status(403).json({ message: 'User is not authed' });
         }
         const decodedData = jsonwebtoken_1.default.verify(token, (0, utils_1.getSecretKey)());
         console.log('Decoded data:', decodedData);
@@ -23,7 +23,7 @@ function default_1(req, res, next) {
     }
     catch (err) {
         console.log(err);
-        return res.status(403).json({ message: 'Пользователь не авторизован' });
+        return res.status(403).json({ message: 'User is not authed' });
     }
 }
 exports.default = default_1;

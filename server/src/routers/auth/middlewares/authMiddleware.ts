@@ -11,7 +11,7 @@ export default function (req: Request, res: Response, next: NextFunction) {
     try {
         const token = req.cookies.authToken;
         if (!token) {
-            return res.status(403).json({ message: 'Пользователь не авторизован' });
+            return res.status(403).json({ message: 'User is not authed' });
         }
         const decodedData = jwt.verify(token, getSecretKey());
         console.log('Decoded data:', decodedData);
@@ -21,6 +21,6 @@ export default function (req: Request, res: Response, next: NextFunction) {
         next();
     } catch (err) {
         console.log(err);
-        return res.status(403).json({ message: 'Пользователь не авторизован' });
+        return res.status(403).json({ message: 'User is not authed' });
     }
 }

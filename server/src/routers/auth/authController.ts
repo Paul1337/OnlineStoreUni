@@ -5,27 +5,28 @@ import { generateAccessToken } from './utils';
 import dbController from '../../db/dbController';
 import { getSecretKey } from './utils';
 import jwt from 'jsonwebtoken';
+import { RowDataPacket } from 'mysql2';
 
 const authController = {
     register: async (req: Request, res: Response) => {
         try {
             const errors = validationResult(req);
 
-            // if (!errors.isEmpty())
-            // return res.status(400).json({ message: 'Registration error', errors });
+            if (!errors.isEmpty())
+                return res.status(400).json({ message: 'Registration error', errors });
 
             console.log('Handling registration: ', JSON.stringify(req.body));
 
             const queryResult = await dbController.connection?.query(
-                `select * from User where email=${req.body.email}`
+                `select * from User where email='${req.body.email}'`
             );
             console.log('query-result', queryResult);
             if (!queryResult) throw new Error('Query result undefined');
 
-            console.log('Query result:', queryResult[0]);
-            const rows = queryResult[0];
-            if (!Array.isArray(rows))
-                return res.status(508).json({ message: 'Some server error, have no idea..' });
+            // console.log('Query result:', queryResult[0]);
+            const rows = queryResult[0] as RowDataPacket[];
+            // if (!Array.isArray(rows))
+            // return res.status(508).json({ message: 'Some server error, have no idea..' });
             if (rows.length == 0) {
                 const passwordHash = bcrypt.hashSync(req.body.password, 7);
                 const insertRes = await dbController.connection?.query(
@@ -48,11 +49,11 @@ const authController = {
             const { email, password } = req.body;
 
             const queryResult = await dbController.connection?.query(
-                `select * from User where email=${req.body.email}`
+                `select * from User where email='${req.body.email}'`
             );
-            const rows = queryResult?.[0];
-            if (!Array.isArray(rows))
-                return res.status(508).json({ message: 'Some server error, have no idea..' });
+            const rows = queryResult?.[0] as RowDataPacket[];
+            // if (!Array.isArray(rows))
+            // return res.status(508).json({ message: 'Some server error, have no idea..' });
 
             const user = rows[0];
             if (!user) return res.status(400).json({ message: `User ${email} not found` });
@@ -72,9 +73,14 @@ const authController = {
             res.cookie('authToken', token, {
                 httpOnly: true,
                 maxAge: 1000 * 60 * 60 * 48,
+                // secure: true,
             });
             return res.json({
-                loginResult: 'success',
+                mesasge: 'success',
+                id: user.id,
+                name: user.name,
+                role: user.role,
+                profileImg: '',
             });
         } catch (e) {
             console.log(e);
