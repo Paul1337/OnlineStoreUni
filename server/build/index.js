@@ -20,7 +20,10 @@ const authRouter_1 = __importDefault(require("./routers/auth/authRouter"));
 const dbController_1 = __importDefault(require("./db/dbController"));
 const DEFAULT_PORT = 8010;
 const app = (0, express_1.default)();
-app.use((0, cors_1.default)());
+app.use((0, cors_1.default)({
+    origin: 'http://127.0.0.1:5173',
+    credentials: true,
+}));
 app.use((0, cookie_parser_1.default)());
 app.use(express_1.default.json());
 app.use('/auth', authRouter_1.default);

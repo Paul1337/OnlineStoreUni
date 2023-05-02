@@ -90,6 +90,7 @@ const authController = {
     auth: async (req: Request, res: Response) => {
         try {
             const token = req.cookies.authToken;
+            // console.log('Got token', token);
             if (!token) {
                 return res.status(403).json({ message: 'User is not authed' });
             }

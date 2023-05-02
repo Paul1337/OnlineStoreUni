@@ -94,6 +94,7 @@ const authController = {
     auth: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const token = req.cookies.authToken;
+            // console.log('Got token', token);
             if (!token) {
                 return res.status(403).json({ message: 'User is not authed' });
             }

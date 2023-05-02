@@ -9,7 +9,12 @@ import dbController from './db/dbController';
 const DEFAULT_PORT = 8010;
 
 const app = express();
-app.use(cors());
+app.use(
+    cors({
+        origin: 'http://127.0.0.1:5173',
+        credentials: true,
+    })
+);
 app.use(cookieParser());
 app.use(express.json());
 app.use('/auth', authRouter);

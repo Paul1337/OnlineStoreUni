@@ -13,7 +13,11 @@ export const authUser = async (): Promise<IAuthResponse> => {
 };
 
 export const loginUser = async (data: ILoginRequest): Promise<ILoginResponse> => {
-    return (await axios.post(`${config.host}/auth/login`, data)).data;
+    return (
+        await axios.post(`${config.host}/auth/login`, data, {
+            withCredentials: true,
+        })
+    ).data;
 };
 
 export const registerUser = async (data: IRegisterRequest): Promise<IRegisterResponse> => {
