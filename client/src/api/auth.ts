@@ -4,12 +4,17 @@ import {
     IAuthResponse,
     ILoginRequest,
     ILoginResponse,
+    ILogoutResponse,
     IRegisterRequest,
     IRegisterResponse,
 } from '../models/api/auth';
 
 export const authUser = async (): Promise<IAuthResponse> => {
-    return (await axios.get(`${config.host}/auth`)).data;
+    return (
+        await axios.get(`${config.host}/auth`, {
+            withCredentials: true,
+        })
+    ).data;
 };
 
 export const loginUser = async (data: ILoginRequest): Promise<ILoginResponse> => {
@@ -17,6 +22,18 @@ export const loginUser = async (data: ILoginRequest): Promise<ILoginResponse> =>
         await axios.post(`${config.host}/auth/login`, data, {
             withCredentials: true,
         })
+    ).data;
+};
+
+export const logoutUser = async (): Promise<ILogoutResponse> => {
+    return (
+        await axios.post(
+            `${config.host}/auth/logout`,
+            {},
+            {
+                withCredentials: true,
+            }
+        )
     ).data;
 };
 

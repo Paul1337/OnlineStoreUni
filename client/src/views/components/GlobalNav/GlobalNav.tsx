@@ -5,7 +5,8 @@ import { Disclosure } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { NavLink, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../store';
+import { RootState, useAppDispatch } from '../../../store';
+import { logoutUser } from '../../../reducers/user/userSlice';
 
 const classNames = (...classes: string[]) => classes.filter(Boolean).join(' ');
 
@@ -13,7 +14,6 @@ const authedNavigation = [
     { name: 'Profile', href: '/' },
     { name: 'Shop', href: '/shop' },
     { name: 'About', href: '/about' },
-    { name: 'Log out', href: '/entry' },
 ];
 
 const defaultNavigation = [
@@ -23,8 +23,13 @@ const defaultNavigation = [
 ];
 
 const GlobalNav = () => {
+    const dispatch = useAppDispatch();
     const userState = useSelector((state: RootState) => state.user);
     const navigation = userState.isAuthed ? authedNavigation : defaultNavigation;
+
+    const handleLogoutClick = () => {
+        dispatch(logoutUser());
+    };
 
     return (
         <Disclosure as='nav' className='bg-gray-800'>
@@ -68,6 +73,14 @@ const GlobalNav = () => {
                                     </div>
                                 </div>
                             </div>
+                            {userState.isAuthed && (
+                                <button
+                                    className='btn border-t-neutral-600 text-white'
+                                    onClick={handleLogoutClick}
+                                >
+                                    Log out
+                                </button>
+                            )}
                         </div>
                     </div>
 

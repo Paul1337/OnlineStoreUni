@@ -5,6 +5,8 @@ const initialState: IBasketState = {
     products: [],
 };
 
+// addItem
+
 const basketSlice = createSlice({
     name: 'basket',
     initialState,

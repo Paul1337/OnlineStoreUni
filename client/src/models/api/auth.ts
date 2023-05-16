@@ -25,3 +25,7 @@ export interface IRegisterResponse {
     message?: string;
     data: IUserData;
 }
+
+export interface ILogoutResponse {
+    message?: string;
+}

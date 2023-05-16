@@ -16,5 +16,6 @@ authRouter.post('/register', [
     }),
 ], authController_1.default.register);
 authRouter.post('/login', [emailMiddleware], authController_1.default.login);
+authRouter.post('/logout', authController_1.default.logout);
 authRouter.get('/', authController_1.default.auth);
 exports.default = authRouter;

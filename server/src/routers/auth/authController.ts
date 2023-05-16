@@ -52,8 +52,6 @@ const authController = {
                 `select * from User where email='${req.body.email}'`
             );
             const rows = queryResult?.[0] as RowDataPacket[];
-            // if (!Array.isArray(rows))
-            // return res.status(508).json({ message: 'Some server error, have no idea..' });
 
             const user = rows[0];
             if (!user) return res.status(400).json({ message: `User ${email} not found` });
@@ -87,11 +85,21 @@ const authController = {
             res.status(400).json({ message: 'Login error' });
         }
     },
+    logout: async (req: Request, res: Response) => {
+        try {
+            res.clearCookie('authToken');
+            return res.json({ message: 'success' });
+        } catch (e) {
+            console.log(e);
+            res.status(400).json({ message: 'Logout error' });
+        }
+    },
     auth: async (req: Request, res: Response) => {
         try {
             const token = req.cookies.authToken;
             // console.log('Got token', token);
             if (!token) {
+                console.warn('No token');
                 return res.status(403).json({ message: 'User is not authed' });
             }
             const decodedData = jwt.verify(token, getSecretKey());

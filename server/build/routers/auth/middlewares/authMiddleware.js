@@ -10,6 +10,7 @@ function default_1(req, res, next) {
         next();
     }
     try {
+        console.log('Middleware verification start');
         const token = req.cookies.authToken;
         if (!token) {
             return res.status(403).json({ message: 'User is not authed' });

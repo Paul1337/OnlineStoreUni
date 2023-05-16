@@ -23,6 +23,12 @@ export const loginUser = createAsyncThunk(
     }
 );
 
+export const logoutUser = createAsyncThunk('user/logout', async (_, { rejectWithValue }) => {
+    return api.logoutUser().catch((err: AxiosError) => {
+        return rejectWithValue(err?.response?.data);
+    });
+});
+
 export const registerUser = createAsyncThunk(
     'user/register',
     async (data: IRegisterRequest, { rejectWithValue }) => {
@@ -39,29 +45,31 @@ const userSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(getUserData.rejected, (state, action) => {
-                console.log('get user data rejected, action = ', action.payload);
-                return {
-                    isAuthed: false,
-                };
+                console.log('get user data rejected, payload = ', action.payload);
+                state.isAuthed = false;
             })
             .addCase(getUserData.fulfilled, (state, action) => {
-                console.log('get user data fulfilled, action = ', action.payload);
-                return {
-                    isAuthed: true,
-                    data: action.payload.data,
-                };
+                console.log('get user data fulfilled, payload = ', action.payload);
+                state.isAuthed = true;
+                state.data = action.payload.data;
             })
             .addCase(loginUser.rejected, (state, action) => {
-                console.log('loginUser.rejected, action = ', action.payload);
+                console.log('loginUser.rejected, payload = ', action.payload);
             })
             .addCase(loginUser.fulfilled, (state, action) => {
-                console.log('loginUser.fulfilled, action = ', action.payload);
+                console.log('loginUser.fulfilled, payload = ', action.payload);
             })
             .addCase(registerUser.rejected, (state, action) => {
-                console.log('registerUser.rejected, action = ', action.payload);
+                console.log('registerUser.rejected, payload = ', action.payload);
             })
             .addCase(registerUser.fulfilled, (state, action) => {
-                console.log('registerUser.fulfilled, action = ', action.payload);
+                console.log('registerUser.fulfilled, payload = ', action.payload);
+            })
+            .addCase(logoutUser.rejected, (state, action) => {
+                console.log('logoutUser.rejected, payload = ', action.payload);
+            })
+            .addCase(logoutUser.fulfilled, (state, action) => {
+                state.isAuthed = false;
             });
     },
 });

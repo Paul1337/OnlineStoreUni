@@ -5,10 +5,13 @@ const initialState: IStoreState = {
     products: [],
 };
 
+// fetchProducts
+
 const storeSlice = createSlice({
     name: 'store',
     initialState,
     reducers: {},
+    extraReducers: {},
 });
 
 export default storeSlice;

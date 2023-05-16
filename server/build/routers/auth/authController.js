@@ -58,8 +58,6 @@ const authController = {
             const { email, password } = req.body;
             const queryResult = yield ((_c = dbController_1.default.connection) === null || _c === void 0 ? void 0 : _c.query(`select * from User where email='${req.body.email}'`));
             const rows = queryResult === null || queryResult === void 0 ? void 0 : queryResult[0];
-            // if (!Array.isArray(rows))
-            // return res.status(508).json({ message: 'Some server error, have no idea..' });
             const user = rows[0];
             if (!user)
                 return res.status(400).json({ message: `User ${email} not found` });
@@ -91,11 +89,22 @@ const authController = {
             res.status(400).json({ message: 'Login error' });
         }
     }),
+    logout: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            res.clearCookie('authToken');
+            return res.json({ message: 'success' });
+        }
+        catch (e) {
+            console.log(e);
+            res.status(400).json({ message: 'Logout error' });
+        }
+    }),
     auth: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const token = req.cookies.authToken;
             // console.log('Got token', token);
             if (!token) {
+                console.warn('No token');
                 return res.status(403).json({ message: 'User is not authed' });
             }
             const decodedData = jsonwebtoken_1.default.verify(token, (0, utils_2.getSecretKey)());

@@ -1,6 +1,7 @@
 import express from 'express';
 import authController from './authController';
 import { check } from 'express-validator';
+import authMiddleware from './middlewares/authMiddleware';
 
 const authRouter = express();
 
@@ -18,6 +19,7 @@ authRouter.post(
     authController.register
 );
 authRouter.post('/login', [emailMiddleware], authController.login);
+authRouter.post('/logout', authController.logout);
 authRouter.get('/', authController.auth);
 
 export default authRouter;
