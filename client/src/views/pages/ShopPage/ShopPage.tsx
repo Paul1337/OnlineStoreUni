@@ -1,39 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from './ShopPage.module.css';
 import { ProductList } from '../../../models/product/product';
+import { RootState, useAppDispatch } from '../../../store';
+import { useSelector } from 'react-redux';
+import { fetchProducts } from '../../../reducers/store/storeSlice';
+import { useNavigate } from 'react-router-dom';
 
-const products: ProductList = [
-    {
-        id: 0,
-        title: 'product-test',
-        description: 'product-description',
-        img: 'img',
-        price: 99,
-    },
-    {
-        id: 1,
-        title: 'product-test 2',
-        description: 'some descr',
-        img: 'img',
-        price: 99,
-    },
-    {
-        id: 2,
-        title: 'product-test 3',
-        description: 'description again',
-        img: 'img',
-        price: 299,
-    },
-    {
-        id: 3,
-        title: 'product-test 4',
-        description: 'description',
-        img: 'img',
-        price: 399,
-    },
-];
+// const products: ProductList =
 
 const ShopPage = () => {
+    const dispatch = useAppDispatch();
+    const store = useSelector((state: RootState) => state.store);
+    const navigate = useNavigate();
+
+    const products = store.products;
+
+    useEffect(() => {
+        dispatch(fetchProducts());
+    }, []);
+
     return (
         <div className={styles.productCont}>
             {products.map((product) => (
@@ -42,6 +27,14 @@ const ShopPage = () => {
                     <img src={product.img} alt='image not found' className={styles.product__img} />
                     {/* <div className={styles.product__descr}>{product.description}</div> */}
                     <div className={styles.product__price}>{product.price} р.</div>
+                    <button
+                        onClick={() => {
+                            navigate(`/products/${product.id}`);
+                        }}
+                        className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+                    >
+                        перейти
+                    </button>
                 </div>
             ))}
         </div>

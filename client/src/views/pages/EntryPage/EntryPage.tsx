@@ -15,12 +15,12 @@ const formContainerStyles: CSSProperties = {
 
 const EntryPage = () => {
     const userState = useSelector((state: RootState) => state.user);
+    const [entryType, setEntryType] = useState(EntryType.Login);
+    const dispatch = useAppDispatch();
+
     if (userState.isAuthed) {
         return <Navigate to='/' />;
     }
-
-    const [entryType, setEntryType] = useState(EntryType.Login);
-    const dispatch = useAppDispatch();
 
     const handleLogin = (data: object) => {
         console.log('Login with data', data);

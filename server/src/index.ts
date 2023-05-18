@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 
 import authRouter from './routers/auth/authRouter';
 import dbController from './db/dbController';
+import productsRouter from './routers/products/productsRouter';
 
 const DEFAULT_PORT = 8010;
 
@@ -17,7 +18,9 @@ app.use(
 );
 app.use(cookieParser());
 app.use(express.json());
+
 app.use('/auth', authRouter);
+app.use('/products', productsRouter);
 
 dotenv.config();
 const PORT = process.env.PORT || DEFAULT_PORT;
