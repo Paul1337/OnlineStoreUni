@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { RootState } from '../../../store';
-import { IProductItem } from '../../../models/product/product';
+import { IProductItem } from '../../../models/state/product/product';
 
 const ProductPage = () => {
     const { id } = useParams();

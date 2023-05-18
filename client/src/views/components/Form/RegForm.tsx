@@ -1,6 +1,6 @@
 import React, { FormEvent, useState } from 'react';
 import styles from './Form.module.css';
-import { IFormProps } from './types/form';
+import { IFormProps } from '../../../models/props/form';
 
 const RegForm = (props: IFormProps) => {
     const [username, setUsername] = useState('');

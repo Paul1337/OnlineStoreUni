@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { IBasketState } from '../../models/basket/basket';
+import { IBasketState } from '../../models/state/basket/basket';
 
 const initialState: IBasketState = {
     products: [],

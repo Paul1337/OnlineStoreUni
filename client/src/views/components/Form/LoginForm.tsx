@@ -1,7 +1,7 @@
 import React, { FormEvent, useState } from 'react';
 import styles from './Form.module.css';
 import { Link } from 'react-router-dom';
-import { ILoginFormProps } from './types/loginForm';
+import { ILoginFormProps } from '../../../models/props/loginForm';
 
 const LoginForm = (props: ILoginFormProps) => {
     const [email, setEmail] = useState('');
@@ -9,11 +9,7 @@ const LoginForm = (props: ILoginFormProps) => {
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
-
-        props.onSubmit({
-            email,
-            password,
-        });
+        props.onSubmit({ email, password });
     };
 
     return (

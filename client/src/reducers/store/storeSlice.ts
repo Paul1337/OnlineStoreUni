@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { IStoreState } from '../../models/store/store';
+import { IStoreState } from '../../models/state/store/store';
 import * as api from '../../api/products';
 import { AxiosError } from 'axios';
 

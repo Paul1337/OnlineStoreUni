@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 import styles from './ShopPage.module.css';
-import { ProductList } from '../../../models/product/product';
+import { ProductList } from '../../../models/state/product/product';
 import { RootState, useAppDispatch } from '../../../store';
 import { useSelector } from 'react-redux';
 import { fetchProducts } from '../../../reducers/store/storeSlice';
 import { useNavigate } from 'react-router-dom';
 import { fixUrl } from '../../../utils/urlUtils';
+import ProductCard from '../../components/ProductCard/ProductCard';
 
 const ShopPage = () => {
     const dispatch = useAppDispatch();
@@ -19,29 +20,9 @@ const ShopPage = () => {
     }, []);
 
     return (
-        <div className={styles.productCont}>
+        <div>
             {products.map((product) => (
-                <div className={styles.product} key={product.id}>
-                    <div className={styles.product__title}>{product.title}</div>
-                    {product.img && (
-                        <img
-                            src={fixUrl(product.img)}
-                            alt='image not found'
-                            className={styles.product__img}
-                        />
-                    )}
-
-                    {/* <div className={styles.product__descr}>{product.description}</div> */}
-                    <div className={styles.product__price}>{product.price} р.</div>
-                    <button
-                        onClick={() => {
-                            navigate(`/products/${product.id}`);
-                        }}
-                        className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
-                    >
-                        перейти
-                    </button>
-                </div>
+                <ProductCard key={product.id} {...product} />
             ))}
         </div>
     );
