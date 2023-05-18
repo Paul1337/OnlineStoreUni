@@ -5,8 +5,7 @@ import { RootState, useAppDispatch } from '../../../store';
 import { useSelector } from 'react-redux';
 import { fetchProducts } from '../../../reducers/store/storeSlice';
 import { useNavigate } from 'react-router-dom';
-
-// const products: ProductList =
+import { fixUrl } from '../../../utils/urlUtils';
 
 const ShopPage = () => {
     const dispatch = useAppDispatch();
@@ -24,7 +23,14 @@ const ShopPage = () => {
             {products.map((product) => (
                 <div className={styles.product} key={product.id}>
                     <div className={styles.product__title}>{product.title}</div>
-                    <img src={product.img} alt='image not found' className={styles.product__img} />
+                    {product.img && (
+                        <img
+                            src={fixUrl(product.img)}
+                            alt='image not found'
+                            className={styles.product__img}
+                        />
+                    )}
+
                     {/* <div className={styles.product__descr}>{product.description}</div> */}
                     <div className={styles.product__price}>{product.price} р.</div>
                     <button
