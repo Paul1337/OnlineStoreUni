@@ -6,10 +6,13 @@ import dbController from '../../db/dbController';
 import { getSecretKey } from './utils';
 import jwt from 'jsonwebtoken';
 import { RowDataPacket } from 'mysql2';
+import { OkPacket } from 'mysql2';
 
 const authController = {
     register: async (req: Request, res: Response) => {
         try {
+            const initialBalance = 0;
+
             const errors = validationResult(req);
 
             if (!errors.isEmpty())
@@ -30,10 +33,19 @@ const authController = {
             if (rows.length == 0) {
                 const passwordHash = bcrypt.hashSync(req.body.password, 7);
                 const insertRes = await dbController.connection?.query(
-                    `insert into User (email, name, password, role) values ('${req.body.email}', '${req.body.username}', '${passwordHash}', 'User')`
+                    `insert into User (email, name, password, role, balance) values ('${req.body.email}', '${req.body.username}', '${passwordHash}', 'User', ${initialBalance}) returning id`
                 );
                 console.log('Insert res:', insertRes);
-                res.status(200).json({ message: 'ok' });
+                res.status(200).json({
+                    message: 'ok',
+                    data: {
+                        id: insertRes.insertId,
+                        name: req.body.username,
+                        role: 'User',
+                        profileImg: '',
+                        balance: initialBalance,
+                    },
+                });
             } else if (rows.length == 1) {
                 res.status(403).json({ message: 'User already exists' });
             } else {
@@ -75,10 +87,13 @@ const authController = {
             });
             return res.json({
                 mesasge: 'success',
-                id: user.id,
-                name: user.name,
-                role: user.role,
-                profileImg: '',
+                data: {
+                    id: user.id,
+                    name: user.name,
+                    role: user.role,
+                    profileImg: '',
+                    balance: user.balance,
+                },
             });
         } catch (e) {
             console.log(e);
@@ -104,7 +119,10 @@ const authController = {
             }
             const decodedData = jwt.verify(token, getSecretKey());
             console.log('Decoded data:', decodedData);
-            return res.json(decodedData);
+            return res.json({
+                message: 'success',
+                data: decodedData,
+            });
         } catch (e) {
             console.log(e);
             res.status(400).json({ message: 'Auth error' });

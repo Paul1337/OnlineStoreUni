@@ -8,20 +8,10 @@ export interface IUserData {
     name: string;
     role: UserRole;
     profileImg: string;
+    balance: number;
 }
 
 export interface IUserState {
     isAuthed: boolean;
     data?: IUserData;
 }
-
-// interface IAuthedUser {
-//     isAuthed: true;
-//     data: IUserData;
-// }
-
-// interface IUnauthedUser {
-//     isAuthed: false;
-// }
-
-// export type IUserState = IAuthedUser | IUnauthedUser;

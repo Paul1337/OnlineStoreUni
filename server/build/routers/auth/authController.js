@@ -22,6 +22,7 @@ const authController = {
     register: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         var _a, _b;
         try {
+            const initialBalance = 0;
             const errors = (0, express_validator_1.validationResult)(req);
             if (!errors.isEmpty())
                 return res.status(400).json({ message: 'Registration error', errors });
@@ -36,9 +37,18 @@ const authController = {
             // return res.status(508).json({ message: 'Some server error, have no idea..' });
             if (rows.length == 0) {
                 const passwordHash = bcryptjs_1.default.hashSync(req.body.password, 7);
-                const insertRes = yield ((_b = dbController_1.default.connection) === null || _b === void 0 ? void 0 : _b.query(`insert into User (email, name, password, role) values ('${req.body.email}', '${req.body.username}', '${passwordHash}', 'User')`));
+                const insertRes = yield ((_b = dbController_1.default.connection) === null || _b === void 0 ? void 0 : _b.query(`insert into User (email, name, password, role, balance) values ('${req.body.email}', '${req.body.username}', '${passwordHash}', 'User', ${initialBalance}) returning id`));
                 console.log('Insert res:', insertRes);
-                res.status(200).json({ message: 'ok' });
+                res.status(200).json({
+                    message: 'ok',
+                    data: {
+                        id: insertRes.insertId,
+                        name: req.body.username,
+                        role: 'User',
+                        profileImg: '',
+                        balance: initialBalance,
+                    },
+                });
             }
             else if (rows.length == 1) {
                 res.status(403).json({ message: 'User already exists' });
@@ -78,10 +88,13 @@ const authController = {
             });
             return res.json({
                 mesasge: 'success',
-                id: user.id,
-                name: user.name,
-                role: user.role,
-                profileImg: '',
+                data: {
+                    id: user.id,
+                    name: user.name,
+                    role: user.role,
+                    profileImg: '',
+                    balance: user.balance,
+                },
             });
         }
         catch (e) {
@@ -109,7 +122,10 @@ const authController = {
             }
             const decodedData = jsonwebtoken_1.default.verify(token, (0, utils_2.getSecretKey)());
             console.log('Decoded data:', decodedData);
-            return res.json(decodedData);
+            return res.json({
+                message: 'success',
+                data: decodedData,
+            });
         }
         catch (e) {
             console.log(e);
