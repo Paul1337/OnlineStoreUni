@@ -6,6 +6,7 @@ export enum UserRole {
 export interface IJWTPayload {
     id: number;
     name: string;
+    email: string;
     role: UserRole;
     profileImg?: string;
     balance: number;

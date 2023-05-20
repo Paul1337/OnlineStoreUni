@@ -66,25 +66,21 @@ const authController = {
                 return res.status(400).json({ message: `Password is incorrect` });
             }
 
-            const token = generateAccessToken({
+            const userData = {
                 id: user.id,
                 name: user.name,
                 role: user.role,
                 balance: user.balance,
-            });
+                email: user.email,
+            };
+            const token = generateAccessToken(userData);
             res.cookie('authToken', token, {
                 httpOnly: true,
                 maxAge: 1000 * 60 * 60 * 48,
             });
             return res.json({
                 mesasge: 'success',
-                data: {
-                    id: user.id,
-                    name: user.name,
-                    role: user.role,
-                    profileImg: '',
-                    balance: user.balance,
-                },
+                data: userData,
             });
         } catch (e) {
             console.log(e);
