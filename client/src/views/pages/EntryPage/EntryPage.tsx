@@ -29,7 +29,9 @@ const EntryPage = () => {
 
     const handleRegister = (data: object) => {
         console.log('Register with data', data);
-        dispatch(registerUser(data as IRegisterRequest));
+        dispatch(registerUser(data as IRegisterRequest)).then(() => {
+            setEntryType(EntryType.Login);
+        });
     };
 
     return (

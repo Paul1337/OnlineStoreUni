@@ -66,8 +66,6 @@ const userSlice = createSlice({
             })
             .addCase(registerUser.fulfilled, (state, action) => {
                 console.log('registerUser.fulfilled, payload = ', action.payload);
-                state.isAuthed = true;
-                state.data = action.payload.data;
             })
             .addCase(logoutUser.rejected, (state, action) => {
                 console.log('logoutUser.rejected, payload = ', action.payload);

@@ -7,6 +7,7 @@ import { getSecretKey } from './utils';
 import jwt from 'jsonwebtoken';
 import { RowDataPacket } from 'mysql2';
 import { OkPacket } from 'mysql2';
+import { ResultSetHeader } from 'mysql2';
 
 const authController = {
     register: async (req: Request, res: Response) => {
@@ -20,31 +21,22 @@ const authController = {
 
             console.log('Handling registration: ', JSON.stringify(req.body));
 
-            const queryResult = await dbController.connection?.query(
+            const queryResult = await dbController.connection?.query<RowDataPacket[]>(
                 `select * from User where email='${req.body.email}'`
             );
-            console.log('query-result', queryResult);
+            // console.log('query-result', queryResult);
             if (!queryResult) throw new Error('Query result undefined');
 
-            // console.log('Query result:', queryResult[0]);
-            const rows = queryResult[0] as RowDataPacket[];
-            // if (!Array.isArray(rows))
-            // return res.status(508).json({ message: 'Some server error, have no idea..' });
+            const rows = queryResult[0];
             if (rows.length == 0) {
                 const passwordHash = bcrypt.hashSync(req.body.password, 7);
-                const insertRes = await dbController.connection?.query(
-                    `insert into User (email, name, password, role, balance) values ('${req.body.email}', '${req.body.username}', '${passwordHash}', 'User', ${initialBalance}) returning id`
+                const insertRes = await dbController.connection?.query<OkPacket>(
+                    `insert into User (email, name, password, role, balance) values ('${req.body.email}', '${req.body.username}', '${passwordHash}', 'User', ${initialBalance})`
                 );
-                console.log('Insert res:', insertRes);
+                if (!insertRes) return res.status(500).json({ message: 'Something went wrong' });
+                console.log('Insert res:', JSON.stringify(insertRes));
                 res.status(200).json({
                     message: 'ok',
-                    data: {
-                        id: insertRes.insertId,
-                        name: req.body.username,
-                        role: 'User',
-                        profileImg: '',
-                        balance: initialBalance,
-                    },
                 });
             } else if (rows.length == 1) {
                 res.status(403).json({ message: 'User already exists' });
@@ -60,12 +52,11 @@ const authController = {
         try {
             const { email, password } = req.body;
 
-            const queryResult = await dbController.connection?.query(
+            const queryResult = await dbController.connection?.query<RowDataPacket[]>(
                 `select * from User where email='${req.body.email}'`
             );
-            const rows = queryResult?.[0] as RowDataPacket[];
-
-            const user = rows[0];
+            const rows = queryResult?.[0];
+            const user = rows?.[0];
             if (!user) return res.status(400).json({ message: `User ${email} not found` });
 
             console.log('user ', user);
@@ -83,7 +74,6 @@ const authController = {
             res.cookie('authToken', token, {
                 httpOnly: true,
                 maxAge: 1000 * 60 * 60 * 48,
-                // secure: true,
             });
             return res.json({
                 mesasge: 'success',

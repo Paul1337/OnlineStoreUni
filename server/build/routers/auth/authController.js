@@ -28,26 +28,18 @@ const authController = {
                 return res.status(400).json({ message: 'Registration error', errors });
             console.log('Handling registration: ', JSON.stringify(req.body));
             const queryResult = yield ((_a = dbController_1.default.connection) === null || _a === void 0 ? void 0 : _a.query(`select * from User where email='${req.body.email}'`));
-            console.log('query-result', queryResult);
+            // console.log('query-result', queryResult);
             if (!queryResult)
                 throw new Error('Query result undefined');
-            // console.log('Query result:', queryResult[0]);
             const rows = queryResult[0];
-            // if (!Array.isArray(rows))
-            // return res.status(508).json({ message: 'Some server error, have no idea..' });
             if (rows.length == 0) {
                 const passwordHash = bcryptjs_1.default.hashSync(req.body.password, 7);
-                const insertRes = yield ((_b = dbController_1.default.connection) === null || _b === void 0 ? void 0 : _b.query(`insert into User (email, name, password, role, balance) values ('${req.body.email}', '${req.body.username}', '${passwordHash}', 'User', ${initialBalance}) returning id`));
-                console.log('Insert res:', insertRes);
+                const insertRes = yield ((_b = dbController_1.default.connection) === null || _b === void 0 ? void 0 : _b.query(`insert into User (email, name, password, role, balance) values ('${req.body.email}', '${req.body.username}', '${passwordHash}', 'User', ${initialBalance})`));
+                if (!insertRes)
+                    return res.status(500).json({ message: 'Something went wrong' });
+                console.log('Insert res:', JSON.stringify(insertRes));
                 res.status(200).json({
                     message: 'ok',
-                    data: {
-                        id: insertRes.insertId,
-                        name: req.body.username,
-                        role: 'User',
-                        profileImg: '',
-                        balance: initialBalance,
-                    },
                 });
             }
             else if (rows.length == 1) {
@@ -68,7 +60,7 @@ const authController = {
             const { email, password } = req.body;
             const queryResult = yield ((_c = dbController_1.default.connection) === null || _c === void 0 ? void 0 : _c.query(`select * from User where email='${req.body.email}'`));
             const rows = queryResult === null || queryResult === void 0 ? void 0 : queryResult[0];
-            const user = rows[0];
+            const user = rows === null || rows === void 0 ? void 0 : rows[0];
             if (!user)
                 return res.status(400).json({ message: `User ${email} not found` });
             console.log('user ', user);
@@ -84,7 +76,6 @@ const authController = {
             res.cookie('authToken', token, {
                 httpOnly: true,
                 maxAge: 1000 * 60 * 60 * 48,
-                // secure: true,
             });
             return res.json({
                 mesasge: 'success',
