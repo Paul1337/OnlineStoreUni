@@ -70,6 +70,7 @@ const authController = {
                 id: user.id,
                 name: user.name,
                 role: user.role,
+                balance: user.balance,
             });
             res.cookie('authToken', token, {
                 httpOnly: true,

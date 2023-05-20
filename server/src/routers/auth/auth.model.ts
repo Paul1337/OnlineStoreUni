@@ -8,4 +8,5 @@ export interface IJWTPayload {
     name: string;
     role: UserRole;
     profileImg?: string;
+    balance: number;
 }
