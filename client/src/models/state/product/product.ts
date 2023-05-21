@@ -4,6 +4,7 @@ export interface IProductItem {
     description: string;
     img: string;
     price: number;
+    categoryName: string;
 }
 
 export type ProductList = Array<IProductItem>;

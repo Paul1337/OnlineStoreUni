@@ -4,7 +4,7 @@ import { fixUrl } from '../../../utils/urlUtils';
 import { useNavigate } from 'react-router-dom';
 import { IProductCardProps } from '../../../models/props/productCard';
 
-const ProductCard: FunctionComponent<IProductCardProps> = ({ id, title, img, price }) => {
+const ProductCard: FunctionComponent<IProductCardProps> = ({ id, title, img, price, categoryName }) => {
     const navigate = useNavigate();
 
     return (
@@ -32,6 +32,15 @@ const ProductCard: FunctionComponent<IProductCardProps> = ({ id, title, img, pri
             >
                 перейти
             </button>
+
+            <div
+                className={styles.categoryBadge.concat(
+                    ' ',
+                    'text-red-700 font-bold text-lg border-solid border p-1 px-2 border-red-700 bg-yellow-200'
+                )}
+            >
+                {categoryName}
+            </div>
         </div>
     );
 };

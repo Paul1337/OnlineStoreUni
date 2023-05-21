@@ -1,11 +1,9 @@
 .product {
-    /* border: 1px solid black;
-    padding: 12px;
-    border-radius: 6px; */
     margin: 6px;
     display: inline-flex;
     flex-direction: column;
     width: 260px;
+    position: relative;
 }
 
 .product__descr {
@@ -17,4 +15,11 @@
     width: 200px;
     height: 200px;
     margin: 0 auto;
+}
+
+.categoryBadge {
+    position: absolute;
+    transform: rotate(-45deg);
+    left: 10px;
+    top: 10px;
 }

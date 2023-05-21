@@ -18,8 +18,9 @@ exports.productsControler = {
     fetchProducts: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         var _a;
         try {
-            const queryResult = yield ((_a = dbController_1.default.connection) === null || _a === void 0 ? void 0 : _a.query(`select * from Product`));
+            const queryResult = yield ((_a = dbController_1.default.connection) === null || _a === void 0 ? void 0 : _a.query(`select pr.*, cat.name as category_name from Product pr left join Category cat on cat.id = category_id`));
             const rows = queryResult === null || queryResult === void 0 ? void 0 : queryResult[0];
+            console.log('Got products: ');
             console.log(rows);
             return res.json({
                 products: rows,

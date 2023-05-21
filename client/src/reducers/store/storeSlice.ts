@@ -32,6 +32,7 @@ const storeSlice = createSlice({
                     description: product.description,
                     img: product.image_src,
                     price: product.price,
+                    categoryName: product.category_name,
                 }));
             });
     },

@@ -5,8 +5,11 @@ import { RowDataPacket } from 'mysql2';
 export const productsControler = {
     fetchProducts: async (req: Request, res: Response) => {
         try {
-            const queryResult = await dbController.connection?.query(`select * from Product`);
+            const queryResult = await dbController.connection?.query(
+                `select pr.*, cat.name as category_name from Product pr left join Category cat on cat.id = category_id`
+            );
             const rows = queryResult?.[0] as RowDataPacket[];
+            console.log('Got products: ');
             console.log(rows);
             return res.json({
                 products: rows,
