@@ -1,3 +1,5 @@
+import { IProductItem } from '../state/product/product';
+
 export enum UserRole {
     User = 'User',
     Admin = 'Admin',
@@ -12,7 +14,19 @@ export interface IUserData {
     balance: number;
 }
 
+export interface ProductOrder {
+    count: number;
+    item: IProductItem;
+}
+
+export interface IOrder {
+    date: Date;
+    price: number;
+    products: Array<ProductOrder>;
+}
+
 export interface IUserState {
     isAuthed: boolean;
     data?: IUserData;
+    orders: Array<IOrder> | null;
 }

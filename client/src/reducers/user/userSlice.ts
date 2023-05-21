@@ -6,6 +6,7 @@ import { IAuthResponse, ILoginRequest, IRegisterRequest } from '../../models/api
 
 const initialState: IUserState = {
     isAuthed: false,
+    orders: null,
 };
 
 export const getUserData = createAsyncThunk('user/getData', async (_, { rejectWithValue }) => {

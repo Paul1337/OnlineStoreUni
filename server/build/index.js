@@ -20,6 +20,7 @@ const path_1 = __importDefault(require("path"));
 const authRouter_1 = __importDefault(require("./routers/auth/authRouter"));
 const dbController_1 = __importDefault(require("./db/dbController"));
 const productsRouter_1 = __importDefault(require("./routers/products/productsRouter"));
+const ordersRouter_1 = __importDefault(require("./routers/orders/ordersRouter"));
 const DEFAULT_PORT = 8010;
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)({
@@ -30,6 +31,7 @@ app.use((0, cookie_parser_1.default)());
 app.use(express_1.default.json());
 app.use('/auth', authRouter_1.default);
 app.use('/products', productsRouter_1.default);
+app.use('/orders', ordersRouter_1.default);
 app.use('/data', express_1.default.static(path_1.default.join(__dirname, '../data/')));
 dotenv_1.default.config();
 const PORT = process.env.PORT || DEFAULT_PORT;

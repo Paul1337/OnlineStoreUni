@@ -7,6 +7,7 @@ import path from 'path';
 import authRouter from './routers/auth/authRouter';
 import dbController from './db/dbController';
 import productsRouter from './routers/products/productsRouter';
+import ordersRouter from './routers/orders/ordersRouter';
 
 const DEFAULT_PORT = 8010;
 
@@ -22,6 +23,7 @@ app.use(express.json());
 
 app.use('/auth', authRouter);
 app.use('/products', productsRouter);
+app.use('/orders', ordersRouter);
 
 app.use('/data', express.static(path.join(__dirname, '../data/')));
 

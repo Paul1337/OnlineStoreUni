@@ -1,15 +1,18 @@
 .leftPart {
 }
 
-.basket {
+.rightPart {
     flex: 1;
     display: flex;
     flex-direction: column;
 }
 
-.basketCont {
+.rightPartCont {
     flex: 1;
     overflow-y: auto;
+}
+
+.userData {
 }
 
 .cont {
@@ -20,4 +23,10 @@
 
 .btn {
     width: -webkit-fill-available;
+}
+
+@media (max-width: 630px) {
+    .cont {
+        flex-direction: column;
+    }
 }

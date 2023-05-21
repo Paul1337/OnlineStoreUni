@@ -1,10 +1,13 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../store';
+import { RootState, useAppDispatch } from '../../../store';
 import { IUserDataComponentProps } from '../../../models/props/profilePage';
 
 import styles from './ProfilePage.module.css';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
+import BasketItem from '../../components/BasketItem/BasketItem';
+import basketSlice from '../../../reducers/basket/basketSlice';
+import OrderItem from '../../components/OrderItem/OrderItem';
 
 const UserDataItem: FunctionComponent<{ label: string; value: string }> = ({ label, value }) => {
     return (
@@ -17,7 +20,7 @@ const UserDataItem: FunctionComponent<{ label: string; value: string }> = ({ lab
 
 const UserDataComponent: FunctionComponent<IUserDataComponentProps> = ({ balance, name, email }) => {
     return (
-        <div className='w-fit m-2'>
+        <div className={styles.userData.concat(' ', 'm-2')}>
             <UserDataItem label='Пользователь' value={name} />
             <UserDataItem label='Email' value={email} />
             <UserDataItem label='Баланс' value={balance.toString()} />
@@ -25,14 +28,30 @@ const UserDataComponent: FunctionComponent<IUserDataComponentProps> = ({ balance
     );
 };
 
+enum ViewType {
+    Basket,
+    Orders,
+}
+
 const ProfilePage = () => {
-    const [showBasket, setShowBasket] = useState(false);
+    const [viewType, setViewType] = useState(ViewType.Basket);
+    const basketState = useSelector((state: RootState) => state.basket);
     const userState = useSelector((state: RootState) => state.user);
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+
     if (!userState.data) {
         return <Navigate to='/entry' />;
     }
 
-    const handleBasketClick = () => setShowBasket((show) => !show);
+    const handleBasketClick = () => setViewType(ViewType.Basket);
+    const handleOrdersClick = () => setViewType(ViewType.Orders);
+
+    const handleOrderClick = () => {};
+
+    const calculateBasketSum = () => {
+        return basketState.products.reduce((acc, cur) => acc + cur.price * cur.count, 0);
+    };
 
     return (
         <div className={styles.cont}>
@@ -42,24 +61,80 @@ const ProfilePage = () => {
                 <div className='my-2'>
                     <button
                         onClick={handleBasketClick}
-                        className={styles.btn.concat(
-                            ' ',
+                        className={
                             'm-1.5 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
-                        )}
+                        }
                     >
                         Корзина
                     </button>
-                    {/* <button className='m-1.5 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'>
-                    Заказы
-                </button> */}
+                    <button
+                        onClick={handleOrdersClick}
+                        className='m-1.5 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+                    >
+                        Заказы
+                    </button>
                 </div>
             </div>
-            {showBasket && (
-                <div className={styles.basket.concat(' ', 'bg-slate-300 p-2 m-2')}>
-                    <h1 className='text-2xl underline'>Корзина</h1>
-                    <div className={styles.basketCont}></div>
-                </div>
-            )}
+            {(() => {
+                if (viewType === ViewType.Basket) {
+                    return (
+                        <div className={styles.rightPart.concat(' ', 'bg-slate-300 p-2 m-2')}>
+                            <h1 className='text-2xl underline'>Корзина</h1>
+                            <div className={styles.rightPartCont}>
+                                {basketState.products.length > 0 ? (
+                                    basketState.products.map((product) => (
+                                        <BasketItem
+                                            key={product.id}
+                                            {...product}
+                                            onDeleteClick={() => {
+                                                dispatch(basketSlice.actions.removeItem(product.id));
+                                            }}
+                                            onClick={() => {
+                                                navigate(`/products/${product.id}`);
+                                            }}
+                                            onCountChange={(e) => {
+                                                if (Number(e.target.value) < 1) return;
+                                                dispatch(
+                                                    basketSlice.actions.updateItemCount({
+                                                        id: product.id,
+                                                        count: Number(e.target.value),
+                                                    })
+                                                );
+                                            }}
+                                        />
+                                    ))
+                                ) : (
+                                    <p className='text-lg my-2'>В корзине пусто!</p>
+                                )}
+                            </div>
+                            {basketState.products.length > 0 && (
+                                <button
+                                    className='bg-slate-500 py-2 text-white'
+                                    onClick={handleOrderClick}
+                                >
+                                    Оформить заказ за {calculateBasketSum()} руб.
+                                </button>
+                            )}
+                        </div>
+                    );
+                } else if (viewType === ViewType.Orders) {
+                    return (
+                        <div className={styles.rightPart.concat(' ', 'bg-slate-300 p-2 m-2')}>
+                            <h1 className='text-2xl underline'>Заказы</h1>
+                            <div className={styles.rightPartCont}>
+                                {userState.orders ? (
+                                    userState.orders.map((order, index) => (
+                                        <OrderItem {...order} key={index} />
+                                    ))
+                                ) : (
+                                    <div>Заказы загружаются...</div>
+                                )}
+                            </div>
+                        </div>
+                    );
+                }
+                return <></>;
+            })()}
         </div>
     );
 };
