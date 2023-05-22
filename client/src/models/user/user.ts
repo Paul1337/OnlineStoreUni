@@ -19,10 +19,12 @@ export interface ProductOrder {
     item: IProductItem;
 }
 
+export type OrderList = Array<ProductOrder>;
+
 export interface IOrder {
     date: Date;
     price: number;
-    products: Array<ProductOrder>;
+    products: OrderList;
 }
 
 export interface IUserState {

@@ -3,7 +3,7 @@ import LoginForm from '../../components/Form/LoginForm';
 import { EntryType } from './EntryPageTypes';
 import RegForm from '../../components/Form/RegForm';
 import { RootState, useAppDispatch } from '../../../store';
-import { registerUser, loginUser } from '../../../reducers/user/userSlice';
+import { registerUser, loginUser, getUserOrders } from '../../../reducers/user/userSlice';
 import { ILoginRequest, IRegisterRequest } from '../../../models/api/auth';
 import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
@@ -24,7 +24,9 @@ const EntryPage = () => {
 
     const handleLogin = (data: object) => {
         console.log('Login with data', data);
-        dispatch(loginUser(data as ILoginRequest));
+        dispatch(loginUser(data as ILoginRequest)).then(() => {
+            dispatch(getUserOrders());
+        });
     };
 
     const handleRegister = (data: object) => {

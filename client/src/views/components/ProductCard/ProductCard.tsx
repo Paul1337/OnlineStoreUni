@@ -14,6 +14,14 @@ const ProductCard: FunctionComponent<IProductCardProps> = ({ id, title, img, pri
             )}
             key={id}
         >
+            <div
+                className={styles.categoryBadge.concat(
+                    ' ',
+                    'text-red-700 font-bold text-lg border-solid border p-1 px-2 border-red-700 bg-yellow-200'
+                )}
+            >
+                {categoryName}
+            </div>
             <div className='text-center text-2xl mb-2'>{title}</div>
             {img && (
                 <div
@@ -32,15 +40,6 @@ const ProductCard: FunctionComponent<IProductCardProps> = ({ id, title, img, pri
             >
                 перейти
             </button>
-
-            <div
-                className={styles.categoryBadge.concat(
-                    ' ',
-                    'text-red-700 font-bold text-lg border-solid border p-1 px-2 border-red-700 bg-yellow-200'
-                )}
-            >
-                {categoryName}
-            </div>
         </div>
     );
 };

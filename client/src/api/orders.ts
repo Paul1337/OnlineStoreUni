@@ -1,26 +1,21 @@
 import axios from 'axios';
 import config from './config';
-import { IFetchOrdersResponse, ITryOrderResponse } from '../models/api/orders';
+import { IFetchOrdersResponse, ITryOrderRequest, ITryOrderResponse } from '../models/api/orders';
 import { IUserState } from '../models/user/user';
 
-export const fetchOrders = async (userState: IUserState): Promise<any> => {
+export const fetchOrders = async (): Promise<IFetchOrdersResponse> => {
     return (
         await axios.get(`${config.host}/orders/fetch`, {
             withCredentials: true,
-            params: {
-                email: userState.data?.email,
-            },
         })
     ).data;
 };
 
-export const tryOrder = async (userState: IUserState): Promise<ITryOrderResponse> => {
+export const tryOrder = async ({ items }: ITryOrderRequest): Promise<ITryOrderResponse> => {
     return (
         await axios.post(
             `${config.host}/orders/tryOrder`,
-            {
-                email: userState.data?.email,
-            },
+            { items },
             {
                 withCredentials: true,
             }

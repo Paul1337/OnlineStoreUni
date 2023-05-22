@@ -29,7 +29,7 @@ const BasketItem: FunctionComponent<IBasketItemProps> = ({
             <span className='text-center text-lg my-2' onClick={(e) => e.stopPropagation()}>
                 Продукт <span className='font-bold'>{title}</span>
                 <span className='ml-2'>
-                    Количество:
+                    <span className='text-xl'>&times;</span>
                     <input
                         type='number'
                         className='w-16 p-1 m-1 rounder border border-black outline-none font-bold'

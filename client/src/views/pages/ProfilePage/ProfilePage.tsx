@@ -8,6 +8,8 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import BasketItem from '../../components/BasketItem/BasketItem';
 import basketSlice from '../../../reducers/basket/basketSlice';
 import OrderItem from '../../components/OrderItem/OrderItem';
+import { tryOrder } from '../../../reducers/user/userSlice';
+import { IProductItem } from '../../../models/state/product/product';
 
 const UserDataItem: FunctionComponent<{ label: string; value: string }> = ({ label, value }) => {
     return (
@@ -47,7 +49,22 @@ const ProfilePage = () => {
     const handleBasketClick = () => setViewType(ViewType.Basket);
     const handleOrdersClick = () => setViewType(ViewType.Orders);
 
-    const handleOrderClick = () => {};
+    const handleOrderClick = () => {
+        dispatch(
+            tryOrder({
+                items: basketState.products.map((basketItem) => ({
+                    count: basketItem.count,
+                    id: basketItem.id,
+                    price: basketItem.price,
+                })),
+            })
+        ).then((data) => {
+            console.log(data);
+            if (data.type === 'user/tryOrder/fulfilled') {
+                dispatch(basketSlice.actions.emptyBasket());
+            }
+        });
+    };
 
     const calculateBasketSum = () => {
         return basketState.products.reduce((acc, cur) => acc + cur.price * cur.count, 0);

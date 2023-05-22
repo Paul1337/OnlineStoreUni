@@ -10,6 +10,7 @@ import { RootState, useAppDispatch } from './store';
 import { Navigate } from 'react-router-dom';
 import AboutPage from './views/pages/AboutPage/AboutPage';
 import basketSlice from './reducers/basket/basketSlice';
+import { getUserData, getUserOrders } from './reducers/user/userSlice';
 
 const LocalStorage = {
     BasketKey: 'basket_products',
@@ -21,6 +22,10 @@ function AppRouter() {
     const basketState = useSelector((state: RootState) => state.basket);
 
     useEffect(() => {
+        dispatch(getUserData()).then(() => {
+            dispatch(getUserOrders());
+        });
+
         const savedBasketItems = localStorage.getItem(LocalStorage.BasketKey);
         const basketItems = savedBasketItems ? JSON.parse(savedBasketItems) : [];
         dispatch(basketSlice.actions.initBasket(basketItems));

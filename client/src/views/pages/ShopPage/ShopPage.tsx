@@ -20,7 +20,7 @@ const ShopPage = () => {
     }, []);
 
     return (
-        <div>
+        <div className='flex-1 overflow-y-auto text-center'>
             {products.map((product) => (
                 <ProductCard key={product.id} {...product} />
             ))}

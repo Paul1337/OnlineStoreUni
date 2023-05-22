@@ -47,7 +47,9 @@ const ProductPage = () => {
                 </div>
                 <div className={partStyles}>
                     <p className='text-2xl'>Описание товара:</p>
-                    <p className='text-2xl my-2 bg-slate-300 p-3 rounded'>{product.description}</p>
+                    <p className='text-2xl my-2 bg-slate-300 p-3 rounded whitespace-pre-wrap'>
+                        {product.description}
+                    </p>
 
                     <div>
                         {isInBasket ? (
