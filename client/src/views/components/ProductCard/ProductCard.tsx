@@ -22,7 +22,7 @@ const ProductCard: FunctionComponent<IProductCardProps> = ({ id, title, img, pri
             >
                 {categoryName}
             </div>
-            <div className='text-center text-2xl mb-2'>{title}</div>
+            <div className='text-center text-2xl mb-2 whitespace-nowrap'>{title}</div>
             {img && (
                 <div
                     style={{

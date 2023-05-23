@@ -16,14 +16,14 @@ const BasketItem: FunctionComponent<IBasketItemProps> = ({
             onClick={onClick}
             className='flex cursor-pointer hover:border-white justify-between m-2 p-2 bg-slate-400 border rounded items-center border-black'
         >
-            <div>
+            <div className='w-32'>
                 <div
                     className='bg-cover bg-center w-20 h-20'
                     style={{ backgroundImage: `url(${fixUrl(img)})` }}
                 ></div>
                 <span className='text-center text-lg'>
                     <span>Цена: </span>
-                    <span className='font-bold'>{price * count} руб.</span>
+                    <span className='font-bold'>{price * count}руб.</span>
                 </span>
             </div>
             <span className='text-center text-lg my-2' onClick={(e) => e.stopPropagation()}>

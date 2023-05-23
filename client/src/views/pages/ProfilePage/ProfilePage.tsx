@@ -46,6 +46,10 @@ const ProfilePage = () => {
         return <Navigate to='/entry' />;
     }
 
+    const handleClearBasketClick = () => {
+        dispatch(basketSlice.actions.emptyBasket());
+    };
+
     const handleBasketClick = () => setViewType(ViewType.Basket);
     const handleOrdersClick = () => setViewType(ViewType.Orders);
 
@@ -96,7 +100,17 @@ const ProfilePage = () => {
                 if (viewType === ViewType.Basket) {
                     return (
                         <div className={styles.rightPart.concat(' ', 'bg-slate-300 p-2 m-2')}>
-                            <h1 className='text-2xl underline'>Корзина</h1>
+                            <div className='flex justify-between'>
+                                <h1 className='text-2xl underline'>Корзина</h1>
+                                {basketState.products.length > 0 && (
+                                    <button
+                                        onClick={handleClearBasketClick}
+                                        className='px-2 border border-black rounded bg-slate-100'
+                                    >
+                                        Очистить корзину
+                                    </button>
+                                )}
+                            </div>
                             <div className={styles.rightPartCont}>
                                 {basketState.products.length > 0 ? (
                                     basketState.products.map((product) => (

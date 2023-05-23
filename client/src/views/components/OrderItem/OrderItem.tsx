@@ -11,7 +11,7 @@ const OrderItem: FunctionComponent<IOrderItemProps> = ({ price, date, products }
             </div>
             <div className='flex-1 p-1.5'>
                 {products.map((product) => (
-                    <div key={product.item.id} className='border p-1.5 border-black rounded'>
+                    <div key={product.item.id} className='border p-1.5 rounded m-1 bg-blue-300'>
                         <div>
                             <div
                                 className='bg-cover bg-center w-20 h-20 m-auto'
